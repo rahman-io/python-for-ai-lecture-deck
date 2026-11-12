@@ -136,6 +136,47 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNext, handlePrev]);
 
+  // Prevent right-click context menu & inspect element shortcuts
+  useEffect(() => {
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+
+    const handleInspectShortcuts = (e: KeyboardEvent) => {
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return;
+      }
+      const isCmdOrCtrl = e.ctrlKey || e.metaKey;
+      if (
+        isCmdOrCtrl &&
+        (e.shiftKey || e.altKey) &&
+        ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)
+      ) {
+        e.preventDefault();
+        return;
+      }
+      if (isCmdOrCtrl && ['U', 'u'].includes(e.key)) {
+        e.preventDefault();
+        return;
+      }
+    };
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    window.addEventListener('contextmenu', handleContextMenu);
+    window.addEventListener('keydown', handleInspectShortcuts);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      window.removeEventListener('contextmenu', handleContextMenu);
+      window.removeEventListener('keydown', handleInspectShortcuts);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
