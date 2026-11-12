@@ -1,0 +1,6 @@
+{
+  "name": "Python for AI - University Lecture Deck",
+  "description": "Interactive 32-slide university lecture presentation for BSc Computer Engineering, featuring storytelling reveals, live code execution, 3D visual convergence, and Google Slides export.",
+  "requestFramePermissions": ["camera", "microphone", "display-capture"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
